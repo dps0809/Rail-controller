@@ -24,6 +24,7 @@ export interface NetworkGraphProps {
   height?: number; // px
   backgroundColor?: string; // e.g. 'wheat'
   activeStationId?: string | number;
+  svgId?: string;
 }
 
 function normalize(points: Pick<Station, "x" | "y">[]) {
@@ -41,7 +42,7 @@ function normalize(points: Pick<Station, "x" | "y">[]) {
   };
 }
 
-export function NetworkGraph({ className, stations, edges, height = 340, backgroundColor, activeStationId }: NetworkGraphProps) {
+export function NetworkGraph({ className, stations, edges, height = 340, backgroundColor, activeStationId, svgId }: NetworkGraphProps) {
   const map = normalize(stations);
   const mapped = stations.map((s) => ({ ...s, ...map(s.x, s.y) }));
 
@@ -50,7 +51,7 @@ export function NetworkGraph({ className, stations, edges, height = 340, backgro
       className={cn("relative w-full overflow-hidden rounded-md border", className)}
       style={backgroundColor ? { background: backgroundColor } : undefined}
     >
-      <svg viewBox="0 0 100 100" className="w-full" style={{ height }}>
+      <svg id={svgId} viewBox="0 0 100 100" className="w-full" style={{ height }}>
         <g>
           {edges.map((e, idx) => {
             const a = mapped.find((s) => String(s.id) === String(e.from))!;
