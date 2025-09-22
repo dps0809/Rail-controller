@@ -167,7 +167,7 @@ export default function Index() {
           <div className="rounded-md border bg-card">
             <div className="flex items-center justify-between gap-2 border-b p-4">
               <h2 className="text-sm font-semibold">Rail Network Graph</h2>
-              <Button variant="outline" size="sm" className="gap-1">
+              <Button variant="outline" size="sm" className="gap-1" onClick={openMap}>
                 <MapPinned className="h-4 w-4" /> Open Google Map
               </Button>
             </div>
