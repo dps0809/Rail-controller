@@ -146,15 +146,15 @@ export default function Index() {
                 </Select>
               </div>
               <div className="flex gap-2 pt-1">
-                <Button className="flex-1 gap-1">
+                <Button className="flex-1 gap-1" onClick={buildRecommendation}>
                   <Rocket className="h-4 w-4" /> Get Recommendation
                 </Button>
               </div>
               <div className="flex gap-2">
-                <Button variant="outline" className="flex-1">
+                <Button variant="outline" className="flex-1" onClick={runSimulation}>
                   Run Simulation
                 </Button>
-                <Button variant="ghost" className="flex-1 gap-1">
+                <Button variant="ghost" className="flex-1 gap-1" onClick={handleReset}>
                   <RotateCcw className="h-4 w-4" /> Reset
                 </Button>
               </div>
