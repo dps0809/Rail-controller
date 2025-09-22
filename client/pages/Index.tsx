@@ -172,7 +172,7 @@ export default function Index() {
               </Button>
             </div>
             <div className="p-4">
-              <NetworkGraph stations={stations} edges={edges} backgroundColor="wheat" height={1000} />
+              <NetworkGraph stations={stations} edges={edges} backgroundColor="wheat" height={1000} activeStationId={activeStationId ?? undefined} />
             </div>
           </div>
 
