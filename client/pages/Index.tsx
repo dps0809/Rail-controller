@@ -278,8 +278,9 @@ export default function Index() {
             <details open>
               <summary className="cursor-pointer text-sm font-semibold">Audit Log</summary>
               <ul className="mt-2 space-y-2 text-sm text-muted-foreground">
-                <li>14:20 — Section updated to Demo</li>
-                <li>14:05 — Operator logged in</li>
+                {audit.map((line, i) => (
+                  <li key={i}>{line}</li>
+                ))}
               </ul>
             </details>
           </div>
