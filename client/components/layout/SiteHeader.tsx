@@ -27,10 +27,16 @@ export function SiteHeader() {
         </div>
         <nav className="ml-2 hidden items-center gap-1 md:flex">
           {tabs.map((t) => (
-            <Link key={t.to} to={t.to} className={cn(
-              "rounded-md px-3 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground",
-              location.pathname === t.to ? "bg-accent text-foreground" : "text-muted-foreground",
-            )}>
+            <Link
+              key={t.to}
+              to={t.to}
+              className={cn(
+                "rounded-md px-3 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground",
+                location.pathname === t.to
+                  ? "bg-accent text-foreground"
+                  : "text-muted-foreground",
+              )}
+            >
               {t.label}
             </Link>
           ))}
@@ -39,7 +45,12 @@ export function SiteHeader() {
           <Button variant="outline" size="sm" className="gap-1">
             Operator <ChevronDown className="h-4 w-4 opacity-60" />
           </Button>
-          <Button variant="outline" size="icon" className="hidden sm:inline-flex" aria-label="settings">
+          <Button
+            variant="outline"
+            size="icon"
+            className="hidden sm:inline-flex"
+            aria-label="settings"
+          >
             <Settings className="h-4 w-4" />
           </Button>
           <Button size="sm" className="gap-1">

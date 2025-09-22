@@ -42,30 +42,63 @@ function normalize(points: Pick<Station, "x" | "y">[]) {
   };
 }
 
-export function NetworkGraph({ className, stations, edges, height = 340, backgroundColor, activeStationId, svgId }: NetworkGraphProps) {
+export function NetworkGraph({
+  className,
+  stations,
+  edges,
+  height = 340,
+  backgroundColor,
+  activeStationId,
+  svgId,
+}: NetworkGraphProps) {
   const map = normalize(stations);
   const mapped = stations.map((s) => ({ ...s, ...map(s.x, s.y) }));
 
   return (
     <div
-      className={cn("relative w-full overflow-hidden rounded-md border", className)}
+      className={cn(
+        "relative w-full overflow-hidden rounded-md border",
+        className,
+      )}
       style={backgroundColor ? { background: backgroundColor } : undefined}
     >
-      <svg id={svgId} viewBox="0 0 100 100" className="w-full" style={{ height }}>
+      <svg
+        id={svgId}
+        viewBox="0 0 100 100"
+        className="w-full"
+        style={{ height }}
+      >
         <g>
           {edges.map((e, idx) => {
             const a = mapped.find((s) => String(s.id) === String(e.from))!;
             const b = mapped.find((s) => String(s.id) === String(e.to))!;
-            const x1 = a.x, y1 = a.y, x2 = b.x, y2 = b.y;
+            const x1 = a.x,
+              y1 = a.y,
+              x2 = b.x,
+              y2 = b.y;
             const midX = (x1 + x2) / 2;
             const midY = (y1 + y2) / 2;
             const stroke = e.color || "#9aa0a6";
             const sw = e.width ? Math.max(1, e.width * 0.4) : 1.5;
             return (
               <g key={idx}>
-                <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={stroke} strokeWidth={sw} />
+                <line
+                  x1={x1}
+                  y1={y1}
+                  x2={x2}
+                  y2={y2}
+                  stroke={stroke}
+                  strokeWidth={sw}
+                />
                 {e.label ? (
-                  <text x={midX} y={midY - 1} fill="#000" fontSize={2.8} textAnchor="middle" fontFamily="Arial, system-ui">
+                  <text
+                    x={midX}
+                    y={midY - 1}
+                    fill="#000"
+                    fontSize={2.8}
+                    textAnchor="middle"
+                    fontFamily="Arial, system-ui"
+                  >
                     {e.label}
                   </text>
                 ) : null}
@@ -82,14 +115,40 @@ export function NetworkGraph({ className, stations, edges, height = 340, backgro
           return (
             <g key={s.id}>
               {s.image ? (
-                <image href={s.image} x={x} y={y} width={iconW} height={iconH} />
+                <image
+                  href={s.image}
+                  x={x}
+                  y={y}
+                  width={iconW}
+                  height={iconH}
+                />
               ) : (
-                <circle cx={s.x} cy={s.y} r={3} className="fill-background stroke-primary" strokeWidth={1.2} />
+                <circle
+                  cx={s.x}
+                  cy={s.y}
+                  r={3}
+                  className="fill-background stroke-primary"
+                  strokeWidth={1.2}
+                />
               )}
               {isActive ? (
-                <circle cx={s.x} cy={s.y} r={4.6} stroke="#2563eb" strokeWidth={1.5} fill="none" />
+                <circle
+                  cx={s.x}
+                  cy={s.y}
+                  r={4.6}
+                  stroke="#2563eb"
+                  strokeWidth={1.5}
+                  fill="none"
+                />
               ) : null}
-              <text x={s.x} y={s.y - (iconH / 2 + 2)} fill="#000" fontSize={2.8} textAnchor="middle" fontFamily="Arial, system-ui">
+              <text
+                x={s.x}
+                y={s.y - (iconH / 2 + 2)}
+                fill="#000"
+                fontSize={2.8}
+                textAnchor="middle"
+                fontFamily="Arial, system-ui"
+              >
                 {s.label}
               </text>
             </g>
