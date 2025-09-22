@@ -11,14 +11,14 @@ import { Slider } from "@/components/ui/slider";
 import { MapPinned, Rocket, RotateCcw } from "lucide-react";
 import NetworkGraph from "@/components/rail/NetworkGraph";
 import KPISparkline from "@/components/rail/KPISparkline";
-import { diamondStations, diamondEdges } from "@/lib/graph";
+import { nodes as puneNodes, edges as puneEdges } from "@/lib/pune-baramati-graph";
 
 export default function Index() {
   const [timeWindow, setTimeWindow] = useState<number[]>([30]);
   const [weights, setWeights] = useState({ express: 1, passenger: 1, freight: 1 });
 
-  const stations = useMemo(() => diamondStations, []);
-  const edges = useMemo(() => diamondEdges, []);
+  const stations = useMemo(() => puneNodes, []);
+  const edges = useMemo(() => puneEdges, []);
 
   return (
     <div className="mx-auto max-w-[1400px] p-4">
