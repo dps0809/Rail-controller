@@ -171,8 +171,8 @@ export default function Index() {
                 <MapPinned className="h-4 w-4" /> Open Google Map
               </Button>
             </div>
-            <div className="p-4">
-              <NetworkGraph stations={stations} edges={edges} backgroundColor="wheat" height={1000} activeStationId={activeStationId ?? undefined} />
+            <div className="p-4 pb-[65px]">
+              <NetworkGraph stations={stations} edges={edges} backgroundColor="wheat" height={741} activeStationId={activeStationId ?? undefined} />
             </div>
           </div>
 
