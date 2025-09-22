@@ -23,6 +23,7 @@ export interface NetworkGraphProps {
   edges: Edge[];
   height?: number; // px
   backgroundColor?: string; // e.g. 'wheat'
+  activeStationId?: string | number;
 }
 
 function normalize(points: Pick<Station, "x" | "y">[]) {
@@ -40,7 +41,7 @@ function normalize(points: Pick<Station, "x" | "y">[]) {
   };
 }
 
-export function NetworkGraph({ className, stations, edges, height = 340, backgroundColor }: NetworkGraphProps) {
+export function NetworkGraph({ className, stations, edges, height = 340, backgroundColor, activeStationId }: NetworkGraphProps) {
   const map = normalize(stations);
   const mapped = stations.map((s) => ({ ...s, ...map(s.x, s.y) }));
 
@@ -76,6 +77,7 @@ export function NetworkGraph({ className, stations, edges, height = 340, backgro
           const iconH = iconW * 1.1;
           const x = s.x - iconW / 2;
           const y = s.y - iconH / 2;
+          const isActive = String(s.id) === String(activeStationId ?? "");
           return (
             <g key={s.id}>
               {s.image ? (
@@ -83,6 +85,9 @@ export function NetworkGraph({ className, stations, edges, height = 340, backgro
               ) : (
                 <circle cx={s.x} cy={s.y} r={3} className="fill-background stroke-primary" strokeWidth={1.2} />
               )}
+              {isActive ? (
+                <circle cx={s.x} cy={s.y} r={4.6} stroke="#2563eb" strokeWidth={1.5} fill="none" />
+              ) : null}
               <text x={s.x} y={s.y - (iconH / 2 + 2)} fill="#000" fontSize={2.8} textAnchor="middle" fontFamily="Arial, system-ui">
                 {s.label}
               </text>
