@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -12,13 +12,76 @@ import { MapPinned, Rocket, RotateCcw } from "lucide-react";
 import NetworkGraph from "@/components/rail/NetworkGraph";
 import KPISparkline from "@/components/rail/KPISparkline";
 import { nodes as puneNodes, edges as puneEdges } from "@/lib/pune-baramati-graph";
+import { toast } from "sonner";
 
 export default function Index() {
   const [timeWindow, setTimeWindow] = useState<number[]>([30]);
   const [weights, setWeights] = useState({ express: 1, passenger: 1, freight: 1 });
 
   const stations = useMemo(() => puneNodes, []);
-  const edges = useMemo(() => puneEdges, []);
+  const baseEdges = useMemo(() => puneEdges, []);
+
+  const [planEdges, setPlanEdges] = useState<typeof baseEdges>([]);
+  const [activeStationId, setActiveStationId] = useState<number | string | null>(null);
+  const [audit, setAudit] = useState<string[]>(["Ready."]);
+  const simTimer = useRef<number | null>(null);
+  const routeSequence = useRef<number[]>([27,1,2,3,4,5,6,7,8,9,10,11,12,13]);
+
+  const edges = useMemo(() => [...baseEdges, ...planEdges], [baseEdges, planEdges]);
+
+  const addLog = (msg: string) => setAudit((a) => [msg, ...a].slice(0, 50));
+
+  const buildRecommendation = () => {
+    const blue = "#2563eb";
+    const thick = 4;
+    const pairs = routeSequence.current.map((id, i, arr) => (i < arr.length - 1 ? [arr[i], arr[i + 1]] : null)).filter(Boolean) as [number, number][];
+    const pathEdges = pairs.map(([from, to]) => ({ from, to, color: blue, width: thick }));
+    setPlanEdges(pathEdges);
+    addLog("Recommendation computed: Pune Jn → Baramati");
+    toast.success("Recommendation ready", { description: "Blue path shown on graph" });
+  };
+
+  const runSimulation = () => {
+    if (!planEdges.length) buildRecommendation();
+    const seq = routeSequence.current;
+    let i = 0;
+    clearSimulation();
+    simTimer.current = window.setInterval(() => {
+      setActiveStationId(seq[i]);
+      addLog(`Reached ${stations.find(s => s.id === seq[i])?.label ?? seq[i]}`);
+      i += 1;
+      if (i >= seq.length) {
+        clearSimulation();
+        toast.success("Simulation complete");
+      }
+    }, 900);
+  };
+
+  const clearSimulation = () => {
+    if (simTimer.current) {
+      window.clearInterval(simTimer.current);
+      simTimer.current = null;
+    }
+  };
+
+  useEffect(() => () => clearSimulation(), []);
+
+  const handleReset = () => {
+    clearSimulation();
+    setPlanEdges([]);
+    setActiveStationId(null);
+    setAudit(["Reset."]);
+    setTimeWindow([30]);
+    setWeights({ express: 1, passenger: 1, freight: 1 });
+  };
+
+  const openMap = () => {
+    window.open(
+      "https://www.google.com/maps/dir/Pune+Junction,+Pune,+Maharashtra/Baramati+Railway+Station,+Maharashtra",
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
 
   return (
     <div className="mx-auto max-w-[1400px] p-4">
