@@ -1,45 +1,69 @@
 import { cn } from "@/lib/utils";
 
 export type Station = {
-  id: string;
+  id: string | number;
   label: string;
-  x: number; // 0..100 relative coords
-  y: number; // 0..100 relative coords
+  x: number; // arbitrary coords (will be normalized)
+  y: number; // arbitrary coords (will be normalized)
+  size?: number;
+  image?: string;
 };
 
 export type Edge = {
-  from: string;
-  to: string;
+  from: string | number;
+  to: string | number;
   label?: string;
+  color?: string;
+  width?: number;
 };
 
 export interface NetworkGraphProps {
   className?: string;
   stations: Station[];
   edges: Edge[];
+  height?: number; // px
+  backgroundColor?: string; // e.g. 'wheat'
 }
 
-export function NetworkGraph({ className, stations, edges }: NetworkGraphProps) {
+function normalize(points: Pick<Station, "x" | "y">[]) {
+  const xs = points.map((p) => p.x);
+  const ys = points.map((p) => p.y);
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minY = Math.min(...ys);
+  const maxY = Math.max(...ys);
+  const pad = 5;
+  return (x: number, y: number) => {
+    const nx = ((x - minX) / (maxX - minX || 1)) * (100 - pad * 2) + pad;
+    const ny = ((y - minY) / (maxY - minY || 1)) * (100 - pad * 2) + pad;
+    return { x: nx, y: 100 - ny };
+  };
+}
+
+export function NetworkGraph({ className, stations, edges, height = 340, backgroundColor }: NetworkGraphProps) {
+  const map = normalize(stations);
+  const mapped = stations.map((s) => ({ ...s, ...map(s.x, s.y) }));
+
   return (
-    <div className={cn("relative w-full overflow-hidden rounded-md border bg-card", className)}>
-      <svg viewBox="0 0 100 100" className="h-[340px] w-full">
-        <defs>
-          <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6">
-            <circle cx="5" cy="5" r="3" className="fill-primary" />
-          </marker>
-        </defs>
-        <g stroke="hsl(var(--border))" strokeWidth="1.5">
+    <div
+      className={cn("relative w-full overflow-hidden rounded-md border", className)}
+      style={backgroundColor ? { background: backgroundColor } : undefined}
+    >
+      <svg viewBox="0 0 100 100" className="w-full" style={{ height }}>
+        <g>
           {edges.map((e, idx) => {
-            const a = stations.find((s) => s.id === e.from)!;
-            const b = stations.find((s) => s.id === e.to)!;
+            const a = mapped.find((s) => String(s.id) === String(e.from))!;
+            const b = mapped.find((s) => String(s.id) === String(e.to))!;
             const x1 = a.x, y1 = a.y, x2 = b.x, y2 = b.y;
             const midX = (x1 + x2) / 2;
             const midY = (y1 + y2) / 2;
+            const stroke = e.color || "#9aa0a6";
+            const sw = e.width ? Math.max(1, e.width * 0.4) : 1.5;
             return (
               <g key={idx}>
-                <line x1={x1} y1={y1} x2={x2} y2={y2} className="stroke-muted-foreground/40" />
+                <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={stroke} strokeWidth={sw} />
                 {e.label ? (
-                  <text x={midX} y={midY - 1} className="fill-muted-foreground text-[2.8px]" textAnchor="middle">
+                  <text x={midX} y={midY - 1} fill="#000" fontSize={2.8} textAnchor="middle" fontFamily="Arial, system-ui">
                     {e.label}
                   </text>
                 ) : null}
@@ -47,14 +71,24 @@ export function NetworkGraph({ className, stations, edges }: NetworkGraphProps) 
             );
           })}
         </g>
-        {stations.map((s) => (
-          <g key={s.id}>
-            <circle cx={s.x} cy={s.y} r={3.2} className="fill-background stroke-primary" strokeWidth={1.2} />
-            <text x={s.x} y={s.y - 5} className="fill-foreground text-[2.8px]" textAnchor="middle">
-              {s.label}
-            </text>
-          </g>
-        ))}
+        {mapped.map((s) => {
+          const iconW = (s.size ?? 30) * 0.18;
+          const iconH = iconW * 1.1;
+          const x = s.x - iconW / 2;
+          const y = s.y - iconH / 2;
+          return (
+            <g key={s.id}>
+              {s.image ? (
+                <image href={s.image} x={x} y={y} width={iconW} height={iconH} />
+              ) : (
+                <circle cx={s.x} cy={s.y} r={3} className="fill-background stroke-primary" strokeWidth={1.2} />
+              )}
+              <text x={s.x} y={s.y - (iconH / 2 + 2)} fill="#000" fontSize={2.8} textAnchor="middle" fontFamily="Arial, system-ui">
+                {s.label}
+              </text>
+            </g>
+          );
+        })}
       </svg>
     </div>
   );
