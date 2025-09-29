@@ -22,8 +22,9 @@ export function SiteHeader() {
           <Menu className="h-4 w-4" />
         </button>
         <div className="flex items-center gap-2 pr-2 text-sm font-semibold">
-          <div className="h-6 w-6 rounded bg-primary" />
-          <span className="hidden sm:inline">Rail·Controller</span>
+          <img src="/favicon.ico" alt="Rail Controller Logo" className="h-16 w-16" />
+          
+          <span className="hidden sm:inline">Rail Controller</span>
         </div>
         <nav className="ml-2 hidden items-center gap-1 md:flex">
           {tabs.map((t) => (

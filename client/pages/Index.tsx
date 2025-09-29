@@ -573,35 +573,32 @@ export default function Index() {
                     <div className="rounded-md border p-2"><div className="text-muted-foreground">On‑time %</div><div className="text-lg">{whatIfKpi.onTimePct}%</div></div>
                     <div className="rounded-md border p-2"><div className="text-muted-foreground">Utilization</div><div className="text-lg">{whatIfKpi.utilization}%</div></div>
                     {whatIfKpi.energyEfficiency !== undefined && (
-                      <div className="col-span-2 rounded-md border p-2"><div className="text-muted-foreground">Energy efficiency</div><div className="text-lg">{whatIfKpi.energyEfficiency}%</div></div>
+                      <div className="col-span-2 rounded-md border p-2"><div className="text-muted-foreground">Energy efficiency</div><div className="text-lg">{whatIfKpi.energyEfficiency?.toFixed(1)}%</div></div>
                     )}
                   </div>
                 </div>
-              )
+              )}
 
-
-
-              }
-                   <div className="flex gap-2">
-                  <Button
-                    variant="secondary"
-                    onClick={() => addLog("operator:a4j1 · accept · plan-001")}
-                  >
-                    Accept
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={() => addLog("operator:a4j1 · reject · plan-001")}
-                  >
-                    Reject
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={() => addLog("operator:a4j1 · modify · plan-001")}
-                  >
-                    Modify
-                  </Button>
-                </div>
+              <div className="flex gap-2">
+                <Button
+                  variant="secondary"
+                  onClick={() => addLog("operator:a4j1 · accept · plan-001")}
+                >
+                  Accept
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => addLog("operator:a4j1 · reject · plan-001")}
+                >
+                  Reject
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => addLog("operator:a4j1 · modify · plan-001")}
+                >
+                  Modify
+                </Button>
+              </div>
 
               {whatIfCompare.ai && whatIfCompare.manual && (
                 <div className="mt-2">
