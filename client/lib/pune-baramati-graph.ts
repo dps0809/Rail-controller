@@ -228,7 +228,7 @@ export const nodes: RawNode[] = [
     x: -450,
     y: -50,
     image: "/location-pin.svg",
-    size: 50,
+    size: 45,
   },
 ];
 

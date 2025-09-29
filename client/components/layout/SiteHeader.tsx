@@ -16,7 +16,7 @@ export function SiteHeader() {
   const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-20 w-full border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className=" top-0 z-20 w-full border-b-2 border-blue-300 bg-blue-100/90 backdrop-blur supports-[backdrop-filter]:bg-blue-100/80">
       <div className="mx-auto flex h-14 max-w-[1400px] items-center gap-2 px-4">
         <button className="mr-1 inline-flex h-8 w-8 items-center justify-center rounded-md border text-muted-foreground hover:bg-accent md:hidden">
           <Menu className="h-4 w-4" />

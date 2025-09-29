@@ -104,6 +104,20 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-white text-foreground;
   }
+}
+
+/* Leaflet Map Styles */
+.leaflet-container {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.leaflet-map-pane {
+  z-index: 1;
+}
+
+.leaflet-control-container {
+  z-index: 1000;
 }

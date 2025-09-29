@@ -1,4 +1,5 @@
 import "./global.css";
+import "leaflet/dist/leaflet.css";
 
 import { Toaster } from "@/components/ui/toaster";
 import { createRoot } from "react-dom/client";
