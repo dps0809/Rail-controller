@@ -11,13 +11,13 @@ A comprehensive **Railway Traffic Control System** developed for **SIH 2025** th
 ## 🎯 Key Features
 
 ### 🎛️ **Intelligent Control Dashboard**
-- **Real-time Train Monitoring**: Live tracking of trains across 27 stations
+- **Real-time Train Monitoring**: Live tracking of trains
 - **AI-Powered Recommendations**: Smart suggestions for optimal train routing
 - **What-if Scenario Analysis**: Predictive modeling for different operational scenarios
 - **KPI Dashboard**: Real-time metrics including throughput, delays, punctuality, and utilization
 
 ### 🗺️ **Advanced Mapping System**
-- **Interactive Railway Network**: Visual representation of the Pune-Baramati corridor
+- **Interactive Railway Network**: Visual representation 
 - **Real-time Train Positions**: Live tracking with satellite imagery integration
 - **Route Optimization**: Visual path planning and recommendation display
 - **Google Maps Integration**: External mapping for detailed geographical context
@@ -91,6 +91,29 @@ server/
 - **Linting**: ESLint + Prettier
 - **Deployment**: Netlify ready
 
+### **Technical Approach: Key Points**
+
+The Railway Traffic Control System uses an Intelligent Hybrid System combining Graph Neural Networks, Constraint Programming, and Large Neighborhood Search.
+
+1. **Data-to-Graph Conversion**
+Data Ingestion: Raw JSON data and sensor inputs are transformed into a graph tensor representing the railway network using the Deep Graph Library (DGL).
+
+2. **GNN for Initial Feasible Solution**
+Initial Scheduling: A Supervised Trained Graph Neural Network (GNN) processes the graph tensor using a message-passing layer to quickly generate an initial, conflict-aware feasible solution (train schedule).
+
+3. **LNS for Combinatorial Optimization**
+Refinement Loop: The initial solution enters a Large Neighborhood Search (LNS) cycle for combinatorial optimization, aiming for global optimality. This cycle involves:
+
+-Destroy: Identifying and removing conflicts/congestions in the schedule.
+
+-Repair: Rebuilding the destroyed sections using a Constraint Programming (CP) solver with hard and soft constraints.
+
+4. **Safety Protocol Validation**
+Conflict Prevention: Every optimized schedule produced by the LNS/CP loop is rigorously checked by a Safety Protocol to ensure it is operationally safe and conflict-free before being recommended.
+
+5. **Feedback and Adaptation**
+Continuous Improvement: Operational results and controller actions are channeled back as Feedback to retrain the GNN and LNS algorithms, ensuring the system continually learns and adapts to real-time railway conditions.
+
 ## 📱 Dashboard Components
 
 ### **1. Control Panel (Left Sidebar)**
@@ -100,12 +123,18 @@ server/
 - **Scenario Selection**: Normal/Maintenance/Congested operations
 - **Action Buttons**: Get Recommendations, Run Simulation, Reset
 
+<img width="398" height="683" alt="image" src="https://github.com/user-attachments/assets/96104b14-b706-47d1-915f-dd276f830414" />
+
+
 ### **2. What-if Scenarios Panel**
 - **Train Order Scenarios**: Test different train sequencing (T001→T002→T003, etc.)
 - **Weather Conditions**: Normal/Rain/Fog/Storm impact analysis
 - **Station Closures**: Simulate temporary station shutdowns
 - **AI vs Manual Comparison**: Compare automated vs manual planning
 - **KPI Projections**: Real-time impact calculations
+
+- <img width="399" height="729" alt="image" src="https://github.com/user-attachments/assets/2b40fd15-8b28-4be1-9266-1c7fb4b5a0ef" />
+
 
 ### **3. Main Dashboard (Center)**
 - **Train Schedule Table**: Live train status with ETA, current position, speed
@@ -114,11 +143,21 @@ server/
 - **Performance Charts**: Throughput trends and delay distribution
 - **Export Tools**: CSV export, PDF reports, map snapshots
 
+1. <img width="998" height="414" alt="image" src="https://github.com/user-attachments/assets/e48d9ac4-ae54-4176-ac03-188942e46fff" />
+
+2. <img width="935" height="824" alt="image" src="https://github.com/user-attachments/assets/b50af80b-c005-4c9d-aaff-4eb4e70c5e2a" />
+
+3. <img width="935" height="277" alt="image" src="https://github.com/user-attachments/assets/318f5a9c-9767-4649-85b5-a4afc4713319" />
+
+
 ### **4. AI Recommendations (Right Sidebar)**
 - **Smart Suggestions**: AI-generated optimization plans
 - **Impact Metrics**: Throughput delta, delay reduction, confidence scores
 - **Action Steps**: Detailed implementation instructions
 - **Plan Controls**: Accept/Reject/Modify recommendations
+
+- <img width="412" height="462" alt="image" src="https://github.com/user-attachments/assets/c4702cdc-b8f0-40e8-8b4e-cea2d7ae9727" />
+
 
 ### **5. KPI Dashboard**
 - **Throughput**: Trains per hour (tph)
@@ -126,24 +165,16 @@ server/
 - **Punctuality**: On-time performance percentage
 - **Utilization**: Network capacity usage
 
+- <img width="408" height="278" alt="image" src="https://github.com/user-attachments/assets/02cbe252-d582-4a75-9e0d-6d7038504fad" />
+
+
 ### **6. Audit Log**
 - **Operator Actions**: Complete activity tracking
 - **System Events**: Automated logging
 - **Decision History**: Record of all recommendations and actions
 
-## 🗺️ Railway Network Coverage
+- <img width="275" height="343" alt="image" src="https://github.com/user-attachments/assets/de9066e5-5032-4034-a35a-20a9a0fea185" />
 
-### **Pune-Baramati Corridor (27 Stations)**
-The system covers the complete railway line from Pune Junction to Baramati:
-
-**Major Junctions:**
-- **Pune Junction** (PUNE) - Main terminal
-- **Daund Junction** (DAUND) - Key interchange
-- **Lonand Junction** (LONAND) - Branch point
-- **Baramati** (BARAMATI) - End terminal
-
-**Complete Station List:**
-1. Pune Jn → 2. Hadapsar → 3. Manjari Budruk → 4. Loni → 5. Uruli → 6. Yevat → 7. Kedgaon → 8. Patas → 9. Daund Jn → 10. Boribiel → 11. Malad Gaon → 12. Shirsai → 13. Katphal → 14. Baramati → 15. Sangawi → 16. Phaltan → 17. Surawadi → 18. Taradgaon → 19. Lonand Jn → 20. Nira → 21. Valha → 22. Daundaj → 23. Jejuri → 24. Rajevadi → 25. Ambale → 26. Alandi → 27. Sasvad Road
 
 ## 🎮 How to Use the Dashboard
 
@@ -162,8 +193,7 @@ The system covers the complete railway line from Pune Junction to Baramati:
 ### **What-if Analysis**
 1. **Choose Scenario**: Select train ordering or weather conditions
 2. **Set Parameters**: Configure closures or delays
-3. **Run Analysis**: Compare AI vs manual approaches
-4. **Review Impact**: Examine projected KPI changes
+3. **Review Impact**: Examine projected KPI changes
 
 ### **Emergency Response**
 1. **Identify Issue**: Monitor alerts and status changes
@@ -185,19 +215,21 @@ git clone <repository-url>
 cd Rail-controller
 
 # Install dependencies
-pnpm install
+npm install
 
 # Start development server
-pnpm dev
+npm run dev
+
 ```
 
 ### **Available Scripts**
 ```bash
-pnpm dev          # Start development server (port 8080)
-pnpm build        # Production build
-pnpm start        # Start production server
-pnpm test         # Run tests
-pnpm typecheck    # TypeScript validation
+npm run dev        # Start development server (port 8080)
+npm run build      # Production build'
+
+npm start          # Start production server
+npm test           # Run tests
+npm run typecheck  # TypeScript validation
 ```
 
 ### **Project Structure**
@@ -210,7 +242,7 @@ pnpm typecheck    # TypeScript validation
 
 ### **Production Build**
 ```bash
-pnpm build
+pnpm build or npm build
 ```
 
 ### **Deployment Options**
@@ -241,21 +273,6 @@ pnpm build
 - **Cost Savings**: Optimized operations reduce operational costs
 - **Better Passenger Experience**: Improved punctuality and service
 
-## 📊 Performance Metrics
-
-### **System Capabilities**
-- **Real-time Processing**: Sub-second response times
-- **Scalability**: Handles 100+ concurrent trains
-- **Accuracy**: 86%+ confidence in AI recommendations
-- **Uptime**: 99.9% availability target
-- **Data Processing**: Real-time updates across 27 stations
-
-### **Operational Improvements**
-- **Throughput Increase**: Up to 13% improvement
-- **Delay Reduction**: Average 3.2 minute savings
-- **Punctuality**: 88%+ on-time performance
-- **Utilization**: 72%+ network efficiency
-
 ## 🤝 Contributing
 
 ### **Development Guidelines**
@@ -271,12 +288,15 @@ pnpm build
 - **Types**: Shared interfaces in `/shared`
 
 ## 📞 Support & Contact
-
 ### **Team Information**
 - **Project**: SIH 2025 Railway Traffic Control System
-- **Technology**: React + TypeScript + Express
-- **Status**: Production Ready
-- **Documentation**: Complete API and component docs
+- **Team members**:
+- Yogesh Roat	yogeshroat4505@gmail.com
+- Parth Soni parthmahecha1305@gmail.com
+- Aashutosh Bharti aashu933ab@gmail.com
+- Divya Prakash divyaprakash.hp1973@gmail.com
+- Shravya shravyakalmadi@gmail.com
+- Netranjali Vilas Patil netra412005@gmail.com
 
 ### **Technical Support**
 - **Issues**: GitHub Issues for bug reports
@@ -290,4 +310,4 @@ pnpm build
 
 This Railway Traffic Control System represents a complete solution for modern railway operations, combining cutting-edge web technologies with AI-powered decision support to create an intelligent, scalable, and user-friendly platform for railway traffic management.
 
-**Built with ❤️ for Smart India Hackathon 2025**
+**Built with <3**
