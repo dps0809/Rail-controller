@@ -112,16 +112,38 @@ export default function Index() {
       width: thick,
     }));
     setPlanEdges(pathEdges);
+    // Random step variations
+    const stepVariations = [
+      [
+        "T003 → allow 3:45:00 pm",
+        "T002 → hold 5m",
+        "T001 → allow 3:37:00 pm",
+      ],
+      [
+        "T002 → allow 4:40:00 pm",
+        "T001 → hold 10m",
+        "T003 → allow 4:32:00 pm",
+      ],
+      [
+        "T001 → allow 2:15:00 pm",
+        "T003 → hold 8m",
+        "T002 → allow 2:28:00 pm",
+      ],
+      [
+        "T003 → hold 12m",
+        "T001 → allow 5:20:00 pm",
+        "T002 → allow 5:35:00 pm",
+      ],
+    ];
+
+    const randomSteps = stepVariations[Math.floor(Math.random() * stepVariations.length)];
+
     setPlan({
       id: "plan-001",
       throughputDelta: 13,
       avgDelayDelta: 3.2,
       confidence: 0.86,
-      steps: [
-        "T003 → allow 3:45:00 pm",
-        "T002 → hold 5m",
-        "T001 → allow 3:37:00 pm",
-      ],
+      steps: randomSteps,
     });
     addLog("operator:a4j1 · view_recommendation · plan-001");
     toast.success("Recommendation ready", {

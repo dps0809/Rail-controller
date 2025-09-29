@@ -2,13 +2,19 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Menu, SlidersHorizontal, Settings, ChevronDown } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const tabs = [
   { to: "/", label: "Console" },
   { to: "/sections", label: "Sections" },
   { to: "/routes", label: "Routes" },
   { to: "/schedules", label: "Schedules" },
-  { to: "/training", label: "Training" },
+  { to: "/training", label: "training" },
   { to: "/admin", label: "Admin" },
 ];
 
@@ -18,11 +24,32 @@ export function SiteHeader() {
   return (
     <header className=" top-0 z-20 w-full border-b-2 border-blue-300 bg-blue-100/90 backdrop-blur supports-[backdrop-filter]:bg-blue-100/80">
       <div className="mx-auto flex h-14 max-w-[1400px] items-center gap-2 px-4">
-        <button className="mr-1 inline-flex h-8 w-8 items-center justify-center rounded-md border text-muted-foreground hover:bg-accent md:hidden">
-          <Menu className="h-4 w-4" />
-        </button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="mr-1 inline-flex h-8 w-8 items-center justify-center rounded-md border text-muted-foreground hover:bg-accent md:hidden">
+              <Menu className="h-4 w-4" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="w-48">
+            {tabs.map((tab) => (
+              <DropdownMenuItem key={tab.to} asChild>
+                <Link
+                  to={tab.to}
+                  className={cn(
+                    "w-full cursor-pointer",
+                    location.pathname === tab.to
+                      ? "bg-accent text-accent-foreground"
+                      : "text-muted-foreground"
+                  )}
+                >
+                  {tab.label}
+                </Link>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
         <div className="flex items-center gap-2 pr-2 text-sm font-semibold">
-          <img src="/favicon.ico" alt="Rail Controller Logo" className="h-16 w-16" />
+          <img src="/favicon.ico" alt="Rail Controller logo" className="h-16 w-16" />
           
           <span className="hidden sm:inline">Rail Controller</span>
         </div>
